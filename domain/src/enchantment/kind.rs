@@ -35,10 +35,10 @@ impl AsRef<EnchantmentKindId> for EnchantmentKindId {
 
 #[derive(Eq, PartialEq, Clone, Hash, Debug)]
 pub struct EnchantmentKind {
-    pub id: EnchantmentKindId,
-    pub name: Rc<str>,
-    pub max_level: EnchantmentLevel,
-    pub cost_multiplier: CostMultiplier,
+    id: EnchantmentKindId,
+    name: Rc<str>,
+    max_level: EnchantmentLevel,
+    cost_multiplier: CostMultiplier,
 }
 
 impl EnchantmentKind {
@@ -55,10 +55,26 @@ impl EnchantmentKind {
             cost_multiplier: cost_multiplier.into(),
         }
     }
+
+    pub fn id(&self) -> &EnchantmentKindId {
+        &self.id
+    }
+
+    pub fn name(&self) -> &str {
+        self.name.as_ref()
+    }
+
+    pub fn max_level(&self) -> EnchantmentLevel {
+        self.max_level
+    }
+
+    pub fn cost_multiplier(&self) -> CostMultiplier {
+        self.cost_multiplier
+    }
 }
 
 impl AsRef<EnchantmentKindId> for EnchantmentKind {
     fn as_ref(&self) -> &EnchantmentKindId {
-        &self.id
+        self.id()
     }
 }
