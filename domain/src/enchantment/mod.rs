@@ -1,3 +1,5 @@
+pub mod combine;
+
 mod cost_multiplier;
 mod kind;
 mod level;
