@@ -4,6 +4,6 @@ fn main() {
     let enchantment_kind = EnchantmentKind::new("aqua_affinity", "Aqua Affinity", 1, 1);
     dbg!(enchantment_kind.clone());
 
-    let enchantment = Enchantment::new(enchantment_kind.id, 1);
+    let enchantment = Enchantment::new(enchantment_kind.id().clone(), 1);
     dbg!(enchantment);
 }

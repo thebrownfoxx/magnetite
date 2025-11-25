@@ -8,8 +8,8 @@ pub use level::EnchantmentLevel;
 
 #[derive(Eq, PartialEq, Clone, Hash, Debug)]
 pub struct Enchantment {
-    pub kind: EnchantmentKindId,
-    pub level: EnchantmentLevel,
+    kind: EnchantmentKindId,
+    level: EnchantmentLevel,
 }
 
 impl Enchantment {
@@ -19,16 +19,28 @@ impl Enchantment {
             level: level.into(),
         }
     }
+
+    pub fn kind(&self) -> &EnchantmentKindId {
+        &self.kind
+    }
+
+    pub fn level(&self) -> EnchantmentLevel {
+        self.level
+    }
+
+    pub fn into_kind_id(self) -> EnchantmentKindId {
+        self.kind
+    }
 }
 
 impl AsRef<EnchantmentKindId> for Enchantment {
     fn as_ref(&self) -> &EnchantmentKindId {
-        &self.kind
+        self.kind()
     }
 }
 
 impl From<Enchantment> for EnchantmentKindId {
     fn from(value: Enchantment) -> Self {
-        value.kind
+        value.into_kind_id()
     }
 }
