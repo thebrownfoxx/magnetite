@@ -10,7 +10,7 @@ impl EnchantmentLevel {
 
     pub fn combine(self, other: EnchantmentLevel) -> EnchantmentLevel {
         if self == other {
-            return Self::new(self.0 + other.0);
+            return Self::new(self.0 + 1);
         };
 
         max(self, other)
