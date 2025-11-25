@@ -1,10 +1,12 @@
 mod cost_multiplier;
 mod kind;
 mod level;
+mod reference;
 
 pub use cost_multiplier::CostMultiplier;
 pub use kind::{EnchantmentKind, EnchantmentKindId};
 pub use level::EnchantmentLevel;
+pub use reference::EnchantmentReference;
 
 #[derive(Eq, PartialEq, Clone, Hash, Debug)]
 pub struct Enchantment {
