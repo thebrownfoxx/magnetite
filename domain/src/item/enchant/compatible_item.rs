@@ -28,10 +28,10 @@ where
     Ench: Enchant,
     Compat: Fn(&ItemKindId, &EnchantmentKindId) -> bool,
 {
-    fn enchant(&self, item: Item, enchantment: Enchantment) -> Result<Item, EnchantError> {
+    fn enchant(&self, item: &mut Item, enchantment: Enchantment) -> Result<(), EnchantError> {
         if !(self.are_compatible)(&item.kind, &enchantment.kind) {
             let error_kind = EnchantErrorKind::IncompatibleItemKind;
-            return Err(EnchantError { item, enchantment, kind: error_kind });
+            return Err(EnchantError { enchantment, kind: error_kind });
         }
 
         self.enchanter.enchant(item, enchantment)

@@ -10,12 +10,11 @@ use crate::enchantment::{Enchantment, EnchantmentKindId};
 use crate::item::Item;
 
 pub trait Enchant {
-    fn enchant(&self, item: Item, enchantment: Enchantment) -> Result<Item, EnchantError>;
+    fn enchant(&self, item: &mut Item, enchantment: Enchantment) -> Result<(), EnchantError>;
 }
 
 #[derive(Eq, PartialEq, Clone, Debug)]
 pub struct EnchantError {
-    pub item: Item,
     pub enchantment: Enchantment,
     pub kind: EnchantErrorKind,
 }

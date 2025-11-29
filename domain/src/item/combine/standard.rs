@@ -1,4 +1,4 @@
-use crate::item::combine::{CombineItems, CombineItemsError, CombinedItem, FailedEnchant};
+use crate::item::combine::{CombineItems, CombineItemsError, CombinedItem};
 use crate::item::enchant::{Enchant, EnchantError};
 use crate::item::{Item, ItemKindId};
 
@@ -47,18 +47,15 @@ where
         };
 
         let sacrifice_enchantment_count = sacrifice.enchantment_count();
-        let mut failed_enchants = Vec::<FailedEnchant>::new();
+        let mut failed_enchants = Vec::<EnchantError>::new();
         for sacrifice_enchantment in sacrifice.drain_enchantments() {
-            match self.enchanter.enchant(target, sacrifice_enchantment) {
-                Ok(item) => {
-                    target = item;
-                }
-                Err(EnchantError { item, enchantment, kind: error_kind }) => {
-                    target = item;
-                    let failed_enchant = FailedEnchant { enchantment, error_kind };
-                    failed_enchants.push(failed_enchant);
-                }
-            }
+            let enchant_result = self.enchanter.enchant(&mut target, sacrifice_enchantment);
+
+            let Err(failed_enchant) = enchant_result else {
+                continue;
+            };
+
+            failed_enchants.push(failed_enchant);
         }
 
         if failed_enchants.len() == sacrifice_enchantment_count {

@@ -16,10 +16,10 @@ impl<Combine: CombineEnchantments> StandardEnchanter<Combine> {
 }
 
 impl<Combine: CombineEnchantments> Enchant for StandardEnchanter<Combine> {
-    fn enchant(&self, mut item: Item, enchantment: Enchantment) -> Result<Item, EnchantError> {
+    fn enchant(&self, item: &mut Item, enchantment: Enchantment) -> Result<(), EnchantError> {
         let Some(matching_enchantment) = item.remove_enchantment(&enchantment.kind) else {
             item.add_enchantment(enchantment);
-            return Ok(item);
+            return Ok(());
         };
 
         let target_level = matching_enchantment.level;
@@ -32,11 +32,10 @@ impl<Combine: CombineEnchantments> Enchant for StandardEnchanter<Combine> {
             item.add_enchantment(matching_enchantment);
 
             let error_kind = EnchantErrorKind::IncompatibleEnchantment(enchantment.kind.clone());
-            return Err(EnchantError { item, enchantment, kind: error_kind });
+            return Err(EnchantError { enchantment, kind: error_kind });
         };
 
-        let combined_enchantment = Enchantment::new(enchantment.kind, combined_level);
-        item.add_enchantment(combined_enchantment);
-        Ok(item)
+        item.add_enchantment(Enchantment::new(enchantment.kind, combined_level));
+        Ok(())
     }
 }

@@ -2,8 +2,8 @@ mod standard;
 
 pub use standard::StandardItemCombiner;
 
-use crate::enchantment::Enchantment;
-use crate::item::{Item, enchant::EnchantErrorKind};
+use crate::item::Item;
+use crate::item::enchant::EnchantError;
 
 pub trait CombineItems {
     fn combine(&self, target: Item, sacrifice: Item) -> Result<CombinedItem, CombineItemsError>;
@@ -12,13 +12,7 @@ pub trait CombineItems {
 #[derive(Eq, PartialEq, Clone, Debug)]
 pub struct CombinedItem {
     pub item: Item,
-    pub failed_enchants: Vec<FailedEnchant>,
-}
-
-#[derive(Eq, PartialEq, Clone, Hash, Debug)]
-pub struct FailedEnchant {
-    pub enchantment: Enchantment,
-    pub error_kind: EnchantErrorKind,
+    pub failed_enchants: Vec<EnchantError>,
 }
 
 #[derive(Eq, PartialEq, Ord, PartialOrd, Copy, Clone, Hash, Debug)]

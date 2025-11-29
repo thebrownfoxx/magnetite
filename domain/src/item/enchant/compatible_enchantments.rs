@@ -28,7 +28,7 @@ where
     Ench: Enchant,
     Compat: Fn(&EnchantmentKindId, &EnchantmentKindId) -> bool,
 {
-    fn enchant(&self, item: Item, enchantment: Enchantment) -> Result<Item, EnchantError> {
+    fn enchant(&self, item: &mut Item, enchantment: Enchantment) -> Result<(), EnchantError> {
         let incompatible_enchantment = item.enchantment_kinds().find(|existing_enchantment| {
             (self.are_compatible)(&existing_enchantment, &enchantment.kind)
         });
@@ -36,7 +36,7 @@ where
         if let Some(incompatible_enchantment) = incompatible_enchantment {
             let incompatible_enchantment = incompatible_enchantment.clone();
             let error_kind = EnchantErrorKind::IncompatibleEnchantment(incompatible_enchantment);
-            return Err(EnchantError { item, enchantment, kind: error_kind });
+            return Err(EnchantError { enchantment, kind: error_kind });
         };
 
         self.enchanter.enchant(item, enchantment)
