@@ -12,12 +12,11 @@ use std::collections::HashMap;
 pub struct Item {
     kind: ItemKindId,
     enchantments: HashMap<EnchantmentKindId, EnchantmentLevel>,
-    anvil_use_count: u8,
 }
 
 impl Item {
     pub fn new(kind: impl Into<ItemKindId>) -> Self {
-        Self { kind: kind.into(), enchantments: HashMap::new(), anvil_use_count: 0 }
+        Self { kind: kind.into(), enchantments: HashMap::new() }
     }
 
     pub fn enchantment_kinds(&self) -> impl Iterator<Item = &EnchantmentKindId> {
