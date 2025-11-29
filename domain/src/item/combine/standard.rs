@@ -1,4 +1,4 @@
-use crate::item::combine::{CombineItems, CombineItemsError, CombinedItem};
+use crate::item::combine::{CombineItems, CombineItemsError};
 use crate::item::enchant::{Enchant, EnchantError};
 use crate::item::{Item, ItemKindId};
 
@@ -39,9 +39,9 @@ where
 {
     fn combine(
         &self,
-        mut target: Item,
+        target: &mut Item,
         mut sacrifice: Item,
-    ) -> Result<CombinedItem, CombineItemsError> {
+    ) -> Result<Vec<EnchantError>, CombineItemsError> {
         if self.are_kinds_compatible(&target, &sacrifice) {
             return Err(CombineItemsError::IncompatibleItemKinds);
         };
@@ -49,7 +49,7 @@ where
         let sacrifice_enchantment_count = sacrifice.enchantment_count();
         let mut failed_enchants = Vec::<EnchantError>::new();
         for sacrifice_enchantment in sacrifice.drain_enchantments() {
-            let enchant_result = self.enchanter.enchant(&mut target, sacrifice_enchantment);
+            let enchant_result = self.enchanter.enchant(target, sacrifice_enchantment);
 
             let Err(failed_enchant) = enchant_result else {
                 continue;
@@ -62,6 +62,6 @@ where
             return Err(CombineItemsError::NoCompatibleEnchantments);
         }
 
-        return Ok(CombinedItem { item: target, failed_enchants });
+        return Ok(failed_enchants);
     }
 }
