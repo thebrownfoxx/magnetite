@@ -1,5 +1,9 @@
+mod compatible_enchantments;
+mod compatible_item;
 mod standard;
 
+pub use compatible_enchantments::CompatibleEnchantmentsEnchanter;
+pub use compatible_item::CompatibleItemEnchanter;
 pub use standard::StandardEnchanter;
 
 use crate::enchantment::{Enchantment, EnchantmentKindId};
