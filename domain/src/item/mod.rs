@@ -1,3 +1,5 @@
+pub mod enchant;
+
 mod kind;
 
 pub use kind::{ItemKind, ItemKindId};
