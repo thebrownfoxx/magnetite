@@ -32,8 +32,8 @@ impl Item {
     }
 
     pub fn add_enchantment(&mut self, enchantment: Enchantment) -> Option<EnchantmentLevel> {
-        let level = enchantment.level();
-        self.enchantments.insert(enchantment.into_kind_id(), level)
+        let Enchantment { kind, level } = enchantment;
+        self.enchantments.insert(kind, level)
     }
 
     pub fn remove_enchantment(&mut self, kind: &EnchantmentKindId) -> Option<Enchantment> {

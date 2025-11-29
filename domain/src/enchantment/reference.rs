@@ -13,8 +13,8 @@ impl<'a> EnchantmentReference<'a> {
 
     pub fn of(enchantment: &'a Enchantment) -> Self {
         Self {
-            kind: enchantment.kind(),
-            level: enchantment.level(),
+            kind: &enchantment.kind,
+            level: enchantment.level,
         }
     }
 
