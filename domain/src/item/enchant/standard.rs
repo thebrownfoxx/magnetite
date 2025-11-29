@@ -9,6 +9,12 @@ pub struct StandardEnchanter<Combine: CombineEnchantments> {
     combiner: Combine,
 }
 
+impl<Combine: CombineEnchantments> StandardEnchanter<Combine> {
+    pub fn new(combiner: Combine) -> Self {
+        Self { combiner }
+    }
+}
+
 impl<Combine: CombineEnchantments> Enchant for StandardEnchanter<Combine> {
     fn enchant(&self, mut item: Item, enchantment: Enchantment) -> Result<Item, EnchantError> {
         let Some(matching_enchantment) = item.remove_enchantment(&enchantment.kind) else {
