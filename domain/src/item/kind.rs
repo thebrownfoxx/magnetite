@@ -36,13 +36,39 @@ impl AsRef<ItemKindId> for ItemKindId {
 
 #[derive(Eq, PartialEq, Clone, Hash, Debug)]
 pub struct ItemKind {
-    pub id: ItemKindId,
-    pub name: Rc<str>,
-    pub is_book: bool,
+    id: ItemKindId,
+    name: Rc<str>,
+    is_book: bool,
+}
+
+impl ItemKind {
+    pub fn new_book(id: impl Into<ItemKindId>, name: impl Into<Rc<str>>) -> Self {
+        Self::new(id, name, true)
+    }
+
+    pub fn new_non_book(id: impl Into<ItemKindId>, name: impl Into<Rc<str>>) -> Self {
+        Self::new(id, name, false)
+    }
+
+    fn new(id: impl Into<ItemKindId>, name: impl Into<Rc<str>>, is_book: bool) -> Self {
+        Self { id: id.into(), name: name.into(), is_book }
+    }
+
+    pub fn id(&self) -> &ItemKindId {
+        &self.id
+    }
+
+    pub fn name(&self) -> &str {
+        &self.name
+    }
+
+    pub fn is_book(&self) -> bool {
+        self.is_book
+    }
 }
 
 impl AsRef<ItemKindId> for ItemKind {
     fn as_ref(&self) -> &ItemKindId {
-        &self.id
+        self.id()
     }
 }
