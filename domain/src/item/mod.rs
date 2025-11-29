@@ -1,3 +1,4 @@
+pub mod combine;
 pub mod enchant;
 
 mod kind;
@@ -29,6 +30,10 @@ impl Item {
             .map(|(kind, level)| EnchantmentReference::new(kind, *level))
     }
 
+    pub fn enchantment_count(&self) -> usize {
+        self.enchantments.len()
+    }
+
     pub fn add_enchantment(&mut self, enchantment: Enchantment) -> Option<EnchantmentLevel> {
         let Enchantment { kind, level } = enchantment;
         self.enchantments.insert(kind, level)
@@ -37,6 +42,13 @@ impl Item {
     pub fn remove_enchantment(&mut self, kind: &EnchantmentKindId) -> Option<Enchantment> {
         self.enchantments
             .remove_entry(kind)
+            .map(|(kind, level)| Enchantment::new(kind, level))
+    }
+
+    pub fn drain_enchantments(&mut self) -> impl Iterator<Item = Enchantment> {
+        self.enchantments
+            .drain()
+            .into_iter()
             .map(|(kind, level)| Enchantment::new(kind, level))
     }
 }
