@@ -4,6 +4,7 @@ use crate::item::{Item, ItemKindId};
 
 use super::EnchantError;
 
+#[derive(Debug)]
 pub struct CompatibleItemEnchanter<Ench, Compat>
 where
     Ench: Enchant,

@@ -4,6 +4,7 @@ use crate::item::enchant::{Enchant, EnchantErrorKind};
 
 use super::EnchantError;
 
+#[derive(Debug)]
 pub struct CompatibleEnchantmentsEnchanter<Ench, Compat>
 where
     Ench: Enchant,
