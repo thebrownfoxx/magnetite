@@ -12,12 +12,5 @@ pub trait CombineEnchantments {
         kind: EnchantmentKindId,
         target_level: EnchantmentLevel,
         sacrifice_level: EnchantmentLevel,
-    ) -> Result<Enchantment, CombineEnchantmentsError>;
-}
-
-#[derive(Eq, PartialEq, Clone, Hash, Debug)]
-pub struct CombineEnchantmentsError {
-    pub kind: EnchantmentKindId,
-    pub target_level: EnchantmentLevel,
-    pub sacrifice_level: EnchantmentLevel,
+    ) -> Result<Enchantment, EnchantmentKindId>;
 }

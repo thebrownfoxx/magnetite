@@ -33,11 +33,11 @@ impl<Combine: CombineEnchantments> Enchant for StandardEnchanter<Combine> {
                 item.add_enchantment(combined_enchantment);
                 Ok(item)
             }
-            Err(error) => {
+            Err(enchantment_kind) => {
                 item.add_enchantment(matching_enchantment);
 
-                let enchantment = Enchantment::new(error.kind.clone(), enchantment.level);
-                let error_kind = EnchantErrorKind::IncompatibleEnchantment(error.kind);
+                let enchantment = Enchantment::new(enchantment_kind.clone(), sacrifice_level);
+                let error_kind = EnchantErrorKind::IncompatibleEnchantment(enchantment_kind);
                 Err(EnchantError { item, enchantment, kind: error_kind })
             }
         }

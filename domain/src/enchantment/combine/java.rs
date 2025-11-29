@@ -3,8 +3,6 @@ use std::cmp::min;
 use crate::enchantment::combine::CombineEnchantments;
 use crate::enchantment::{Enchantment, EnchantmentKindId, EnchantmentLevel};
 
-use super::CombineEnchantmentsError;
-
 #[derive(Debug)]
 pub struct JavaEnchantmentCombiner<Max>
 where
@@ -31,11 +29,11 @@ where
         kind: EnchantmentKindId,
         target_level: EnchantmentLevel,
         sacrifice_level: EnchantmentLevel,
-    ) -> Result<Enchantment, CombineEnchantmentsError> {
+    ) -> Result<Enchantment, EnchantmentKindId> {
         let level = target_level.combine(sacrifice_level);
 
         let Some(max_level) = (self.max_level)(&kind) else {
-            return Err(CombineEnchantmentsError { kind, target_level, sacrifice_level });
+            return Err(kind);
         };
 
         let level = min(level, max_level);
