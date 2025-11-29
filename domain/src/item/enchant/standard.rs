@@ -24,22 +24,19 @@ impl<Combine: CombineEnchantments> Enchant for StandardEnchanter<Combine> {
 
         let target_level = matching_enchantment.level;
         let sacrifice_level = enchantment.level;
-        let combined_enchantment =
+        let combined_level =
             self.combiner
-                .combine(enchantment.kind, target_level, sacrifice_level);
+                .combine(&enchantment.kind, target_level, sacrifice_level);
 
-        match combined_enchantment {
-            Ok(combined_enchantment) => {
-                item.add_enchantment(combined_enchantment);
-                Ok(item)
-            }
-            Err(enchantment_kind) => {
-                item.add_enchantment(matching_enchantment);
+        let Some(combined_level) = combined_level else {
+            item.add_enchantment(matching_enchantment);
 
-                let enchantment = Enchantment::new(enchantment_kind.clone(), sacrifice_level);
-                let error_kind = EnchantErrorKind::IncompatibleEnchantment(enchantment_kind);
-                Err(EnchantError { item, enchantment, kind: error_kind })
-            }
-        }
+            let error_kind = EnchantErrorKind::IncompatibleEnchantment(enchantment.kind.clone());
+            return Err(EnchantError { item, enchantment, kind: error_kind });
+        };
+
+        let combined_enchantment = Enchantment::new(enchantment.kind, combined_level);
+        item.add_enchantment(combined_enchantment);
+        Ok(item)
     }
 }

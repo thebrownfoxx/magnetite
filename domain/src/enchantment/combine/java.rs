@@ -1,7 +1,7 @@
 use std::cmp::min;
 
 use crate::enchantment::combine::CombineEnchantments;
-use crate::enchantment::{Enchantment, EnchantmentKindId, EnchantmentLevel};
+use crate::enchantment::{EnchantmentKindId, EnchantmentLevel};
 
 #[derive(Debug)]
 pub struct JavaEnchantmentCombiner<Max>
@@ -26,17 +26,17 @@ where
 {
     fn combine(
         &self,
-        kind: EnchantmentKindId,
+        kind: &EnchantmentKindId,
         target_level: EnchantmentLevel,
         sacrifice_level: EnchantmentLevel,
-    ) -> Result<Enchantment, EnchantmentKindId> {
+    ) -> Option<EnchantmentLevel> {
         let level = target_level.combine(sacrifice_level);
 
         let Some(max_level) = (self.max_level)(&kind) else {
-            return Err(kind);
+            return None;
         };
 
         let level = min(level, max_level);
-        Ok(Enchantment::new(kind, level))
+        Some(level)
     }
 }

@@ -4,13 +4,13 @@ mod java;
 pub use bedrock::BedrockEnchantmentCombiner;
 pub use java::JavaEnchantmentCombiner;
 
-use crate::enchantment::{Enchantment, EnchantmentKindId, EnchantmentLevel};
+use crate::enchantment::{EnchantmentKindId, EnchantmentLevel};
 
 pub trait CombineEnchantments {
     fn combine(
         &self,
-        kind: EnchantmentKindId,
+        kind: &EnchantmentKindId,
         target_level: EnchantmentLevel,
         sacrifice_level: EnchantmentLevel,
-    ) -> Result<Enchantment, EnchantmentKindId>;
+    ) -> Option<EnchantmentLevel>;
 }
