@@ -6,9 +6,6 @@ pub struct CostMultiplier {
 
 impl From<u8> for CostMultiplier {
     fn from(value: u8) -> Self {
-        CostMultiplier {
-            for_book: value,
-            for_item: value,
-        }
+        CostMultiplier { for_book: value, for_item: value }
     }
 }

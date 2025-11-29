@@ -12,10 +12,7 @@ impl<'a> EnchantmentReference<'a> {
     }
 
     pub fn of(enchantment: &'a Enchantment) -> Self {
-        Self {
-            kind: &enchantment.kind,
-            level: enchantment.level,
-        }
+        Self { kind: &enchantment.kind, level: enchantment.level }
     }
 
     pub fn kind(&self) -> &EnchantmentKindId {
@@ -27,9 +24,6 @@ impl<'a> EnchantmentReference<'a> {
     }
 
     pub fn into_enchantment(self) -> Enchantment {
-        Enchantment {
-            kind: self.kind().clone(),
-            level: self.level(),
-        }
+        Enchantment { kind: self.kind().clone(), level: self.level() }
     }
 }

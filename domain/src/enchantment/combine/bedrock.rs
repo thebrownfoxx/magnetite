@@ -33,21 +33,13 @@ where
         sacrifice_level: EnchantmentLevel,
     ) -> Result<Enchantment, CombineEnchantmentsError> {
         if sacrifice_level < target_level {
-            return Err(CombineEnchantmentsError {
-                kind,
-                target_level,
-                sacrifice_level,
-            });
+            return Err(CombineEnchantmentsError { kind, target_level, sacrifice_level });
         }
 
         let level = target_level.combine(sacrifice_level);
 
         let Some(max_level) = (self.max_level)(&kind) else {
-            return Err(CombineEnchantmentsError {
-                kind,
-                target_level,
-                sacrifice_level,
-            });
+            return Err(CombineEnchantmentsError { kind, target_level, sacrifice_level });
         };
 
         let level = min(level, max_level);

@@ -18,10 +18,7 @@ pub struct Enchantment {
 
 impl Enchantment {
     pub fn new(kind: impl Into<EnchantmentKindId>, level: impl Into<EnchantmentLevel>) -> Self {
-        Self {
-            kind: kind.into(),
-            level: level.into(),
-        }
+        Self { kind: kind.into(), level: level.into() }
     }
 }
 
