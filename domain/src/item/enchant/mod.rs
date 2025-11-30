@@ -13,7 +13,7 @@ pub trait Enchant {
     fn enchant(&self, item: &mut Item, enchantment: Enchantment) -> Result<(), EnchantError>;
 }
 
-#[derive(Eq, PartialEq, Clone, Debug)]
+#[derive(Eq, PartialEq, Clone, Hash, Debug)]
 pub struct EnchantError {
     pub enchantment: Enchantment,
     pub kind: EnchantErrorKind,
