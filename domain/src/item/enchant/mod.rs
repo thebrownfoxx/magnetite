@@ -1,9 +1,11 @@
 mod compatible_enchantments;
 mod compatible_item;
+mod reporting;
 mod standard;
 
 pub use compatible_enchantments::CompatibleEnchantmentsEnchanter;
 pub use compatible_item::CompatibleItemEnchanter;
+pub use reporting::ReportingEnchanter;
 pub use standard::StandardEnchanter;
 
 use crate::enchantment::{Enchantment, EnchantmentKindId, EnchantmentLevel};
