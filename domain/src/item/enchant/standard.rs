@@ -17,7 +17,7 @@ impl<Combine: CombineEnchantments> StandardEnchanter<Combine> {
 
 impl<Combine: CombineEnchantments> Enchant for StandardEnchanter<Combine> {
     fn enchant(&self, item: &mut Item, enchantment: Enchantment) -> Result<(), EnchantError> {
-        let Some(matching_enchantment) = item.remove_enchantment(&enchantment.kind) else {
+        let Some(matching_enchantment) = item.remove_enchantment(&enchantment) else {
             item.add_enchantment(enchantment);
             return Ok(());
         };

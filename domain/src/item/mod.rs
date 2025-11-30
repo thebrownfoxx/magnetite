@@ -33,8 +33,11 @@ impl Item {
             .map(|(kind, level)| EnchantmentReference::new(kind, *level))
     }
 
-    pub fn enchantment_level(&self, kind: &EnchantmentKindId) -> Option<EnchantmentLevel> {
-        self.enchantments.get(kind).map(|kind| *kind)
+    pub fn enchantment_level(
+        &self,
+        kind: impl AsRef<EnchantmentKindId>,
+    ) -> Option<EnchantmentLevel> {
+        self.enchantments.get(kind.as_ref()).map(|kind| *kind)
     }
 
     pub fn enchantment_count(&self) -> usize {
@@ -46,9 +49,12 @@ impl Item {
         self.enchantments.insert(kind, level)
     }
 
-    pub fn remove_enchantment(&mut self, kind: &EnchantmentKindId) -> Option<Enchantment> {
+    pub fn remove_enchantment(
+        &mut self,
+        kind: impl AsRef<EnchantmentKindId>,
+    ) -> Option<Enchantment> {
         self.enchantments
-            .remove_entry(kind)
+            .remove_entry(kind.as_ref())
             .map(|(kind, level)| Enchantment::new(kind, level))
     }
 
