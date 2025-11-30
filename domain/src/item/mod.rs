@@ -19,6 +19,10 @@ impl Item {
         Self { kind: kind.into(), enchantments: HashMap::new() }
     }
 
+    pub fn kind(&self) -> &ItemKindId {
+        &self.kind
+    }
+
     pub fn enchantment_kinds(&self) -> impl Iterator<Item = &EnchantmentKindId> {
         self.enchantments.keys()
     }
