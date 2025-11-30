@@ -1,4 +1,4 @@
-use crate::enchantment::{Enchantment, EnchantmentKindId};
+use crate::enchantment::{Enchantment, EnchantmentKindId, EnchantmentLevel};
 use crate::item::enchant::{Enchant, EnchantErrorKind};
 use crate::item::{Item, ItemKindId};
 
@@ -29,7 +29,11 @@ where
     Ench: Enchant,
     Compat: Fn(&ItemKindId, &EnchantmentKindId) -> bool,
 {
-    fn enchant(&self, item: &mut Item, enchantment: Enchantment) -> Result<(), EnchantError> {
+    fn enchant(
+        &self,
+        item: &mut Item,
+        enchantment: Enchantment,
+    ) -> Result<EnchantmentLevel, EnchantError> {
         if !(self.are_compatible)(&item.kind, &enchantment.kind) {
             let error_kind = EnchantErrorKind::IncompatibleItemKind;
             return Err(EnchantError { enchantment, kind: error_kind });

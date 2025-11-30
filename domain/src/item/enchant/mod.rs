@@ -6,11 +6,15 @@ pub use compatible_enchantments::CompatibleEnchantmentsEnchanter;
 pub use compatible_item::CompatibleItemEnchanter;
 pub use standard::StandardEnchanter;
 
-use crate::enchantment::{Enchantment, EnchantmentKindId};
+use crate::enchantment::{Enchantment, EnchantmentKindId, EnchantmentLevel};
 use crate::item::Item;
 
 pub trait Enchant {
-    fn enchant(&self, item: &mut Item, enchantment: Enchantment) -> Result<(), EnchantError>;
+    fn enchant(
+        &self,
+        item: &mut Item,
+        enchantment: Enchantment,
+    ) -> Result<EnchantmentLevel, EnchantError>;
 }
 
 #[derive(Eq, PartialEq, Clone, Hash, Debug)]

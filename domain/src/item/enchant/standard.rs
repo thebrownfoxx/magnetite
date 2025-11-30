@@ -1,3 +1,4 @@
+use crate::enchantment::EnchantmentLevel;
 use crate::enchantment::{Enchantment, combine::CombineEnchantments};
 use crate::item::enchant::EnchantErrorKind;
 use crate::item::{Item, enchant::Enchant};
@@ -16,10 +17,15 @@ impl<Combine: CombineEnchantments> StandardEnchanter<Combine> {
 }
 
 impl<Combine: CombineEnchantments> Enchant for StandardEnchanter<Combine> {
-    fn enchant(&self, item: &mut Item, enchantment: Enchantment) -> Result<(), EnchantError> {
+    fn enchant(
+        &self,
+        item: &mut Item,
+        enchantment: Enchantment,
+    ) -> Result<EnchantmentLevel, EnchantError> {
         let Some(matching_enchantment) = item.remove_enchantment(&enchantment) else {
+            let level = enchantment.level;
             item.add_enchantment(enchantment);
-            return Ok(());
+            return Ok(level);
         };
 
         let target_level = matching_enchantment.level;
@@ -36,6 +42,6 @@ impl<Combine: CombineEnchantments> Enchant for StandardEnchanter<Combine> {
         };
 
         item.add_enchantment(Enchantment::new(enchantment.kind, combined_level));
-        Ok(())
+        Ok(combined_level)
     }
 }
