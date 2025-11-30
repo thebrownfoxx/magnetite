@@ -33,6 +33,10 @@ impl Item {
             .map(|(kind, level)| EnchantmentReference::new(kind, *level))
     }
 
+    pub fn enchantment_level(&self, kind: &EnchantmentKindId) -> Option<EnchantmentLevel> {
+        self.enchantments.get(kind).map(|kind| *kind)
+    }
+
     pub fn enchantment_count(&self) -> usize {
         self.enchantments.len()
     }
