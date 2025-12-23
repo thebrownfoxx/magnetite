@@ -1,3 +1,5 @@
+use std::cell::RefCell;
+
 use crate::enchantment::{Enchantment, EnchantmentKindId, EnchantmentLevel};
 use crate::item::Item;
 use crate::item::enchant::{Enchant, EnchantError};
@@ -6,10 +8,10 @@ use crate::item::enchant::{Enchant, EnchantError};
 pub struct ReportingEnchanter<Ench, Report>
 where
     Ench: Enchant,
-    Report: Fn(EnchantReport),
+    Report: FnMut(EnchantReport),
 {
     enchanter: Ench,
-    report: Report,
+    report: RefCell<Report>, // TODO: Look for a way to avoid interior mutability
 }
 
 pub type EnchantReport = Result<EnchantSuccess, EnchantError>;
@@ -24,17 +26,17 @@ pub struct EnchantSuccess {
 impl<Ench, Report> ReportingEnchanter<Ench, Report>
 where
     Ench: Enchant,
-    Report: Fn(EnchantReport),
+    Report: FnMut(EnchantReport),
 {
     pub fn new(enchanter: Ench, report: Report) -> Self {
-        Self { enchanter, report }
+        Self { enchanter, report: RefCell::new(report) }
     }
 }
 
 impl<Ench, Report> Enchant for ReportingEnchanter<Ench, Report>
 where
     Ench: Enchant,
-    Report: Fn(EnchantReport),
+    Report: FnMut(EnchantReport),
 {
     fn enchant(
         &self,
@@ -47,7 +49,7 @@ where
         let result = self.enchanter.enchant(item, enchantment);
 
         let map = |new_level| EnchantSuccess { kind, old_level, new_level };
-        (self.report)(result.clone().map(map));
+        (self.report.borrow_mut())(result.clone().map(map));
 
         result
     }
