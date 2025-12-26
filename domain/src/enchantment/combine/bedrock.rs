@@ -1,5 +1,3 @@
-use std::cmp::min;
-
 use crate::enchantment::combine::CombineEnchantments;
 use crate::enchantment::{EnchantmentKindId, EnchantmentLevel};
 
@@ -36,6 +34,11 @@ where
 
         let level = target_level.combine(sacrifice_level);
         let max_level = (self.max_level)(&kind);
-        Some(min(level, max_level))
+
+        if level > max_level {
+            return None;
+        }
+
+        Some(level)
     }
 }
