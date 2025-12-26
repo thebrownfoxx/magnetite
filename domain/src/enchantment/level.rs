@@ -32,3 +32,38 @@ impl From<EnchantmentLevel> for u8 {
         value.value()
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_combine_with_lower() {
+        let lhs = EnchantmentLevel::new(2);
+        let rhs = EnchantmentLevel::new(lhs.value() - 1);
+
+        let result = lhs.combine(rhs);
+        let expected = lhs;
+        assert_eq!(result, expected);
+    }
+
+    #[test]
+    fn test_combine_with_higher() {
+        let lhs = EnchantmentLevel::new(1);
+        let rhs = EnchantmentLevel::new(lhs.value() + 1);
+
+        let result = lhs.combine(rhs);
+        let expected = rhs;
+        assert_eq!(result, expected);
+    }
+
+    #[test]
+    fn test_combine_with_equal() {
+        let lhs = EnchantmentLevel::new(1);
+        let rhs = lhs;
+
+        let result = lhs.combine(rhs);
+        let expected = EnchantmentLevel(lhs.value() + 1);
+        assert_eq!(result, expected);
+    }
+}
