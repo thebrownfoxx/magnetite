@@ -35,3 +35,92 @@ where
         Some(min(level, max_level))
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_combine_lower() {
+        let combiner = combiner();
+        let kind = enchantment_kind();
+        let target = EnchantmentLevel::new(2);
+        let sacrifice = EnchantmentLevel::new(target.value() - 1);
+
+        let result = combiner.combine(&kind, target, sacrifice);
+        let expected = Some(target.combine(sacrifice));
+        assert_eq!(result, expected);
+    }
+
+    #[test]
+    fn test_combine_higher() {
+        let combiner = combiner();
+        let kind = enchantment_kind();
+        let target = EnchantmentLevel::new(1);
+        let sacrifice = EnchantmentLevel::new(target.value() + 1);
+
+        let result = combiner.combine(&kind, target, sacrifice);
+        let expected = Some(target.combine(sacrifice));
+        assert_eq!(result, expected);
+    }
+
+    #[test]
+    fn test_combine_equal() {
+        let combiner = combiner();
+        let kind = enchantment_kind();
+        let target = EnchantmentLevel::new(1);
+        let sacrifice = target;
+
+        let result = combiner.combine(&kind, target, sacrifice);
+        let expected = Some(target.combine(sacrifice));
+        assert_eq!(result, expected);
+    }
+
+    #[test]
+    fn test_combine_overflowed_max() {
+        let combiner = combiner();
+        let kind = enchantment_kind();
+        let target = max_enchantment_level();
+        let sacrifice = target;
+
+        let result = combiner.combine(&kind, target, sacrifice);
+        let expected = Some(max_enchantment_level());
+        assert_eq!(result, expected);
+    }
+
+    #[test]
+    fn test_combine_reached_max() {
+        let combiner = combiner();
+        let kind = enchantment_kind();
+        let target = EnchantmentLevel::new(max_enchantment_level().value() - 1);
+        let sacrifice = target;
+
+        let result = combiner.combine(&kind, target, sacrifice);
+        let expected = Some(target.combine(sacrifice));
+        assert_eq!(result, expected);
+    }
+
+    #[test]
+    fn test_combine_one_away_from_max() {
+        let combiner = combiner();
+        let kind = enchantment_kind();
+        let target = EnchantmentLevel::new(max_enchantment_level().value() - 2);
+        let sacrifice = target;
+
+        let result = combiner.combine(&kind, target, sacrifice);
+        let expected = Some(target.combine(sacrifice));
+        assert_eq!(result, expected);
+    }
+
+    fn enchantment_kind() -> EnchantmentKindId {
+        EnchantmentKindId::new("im_an_enchantment")
+    }
+
+    fn combiner() -> impl CombineEnchantments {
+        JavaEnchantmentCombiner::new(|_| max_enchantment_level())
+    }
+
+    fn max_enchantment_level() -> EnchantmentLevel {
+        EnchantmentLevel::new(3)
+    }
+}
