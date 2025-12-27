@@ -43,3 +43,75 @@ impl<Combine: CombineEnchantments> Enchant for StandardEnchanter<Combine> {
         Ok(combined_level)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use crate::{
+        enchantment::combine::{AlwaysFailEnchantmentCombiner, BasicEnchantmentCombiner},
+        item::ItemKindId,
+    };
+
+    use super::*;
+
+    #[test]
+    fn test_enchant_no_matching() {
+        let mut item = new_item();
+        let enchantment = Enchantment::new("enchantment", 1);
+
+        let enchanter = StandardEnchanter::new(BasicEnchantmentCombiner);
+        let result = enchanter.enchant(&mut item, enchantment.clone());
+
+        let mut expected_item = new_item();
+        expected_item.add_enchantment(enchantment.clone());
+
+        assert_eq!(result, Ok(enchantment.level));
+        assert_eq!(item, expected_item);
+    }
+
+    #[test]
+    fn test_enchant_incompatible() {
+        let mut item = new_item();
+        let enchantment = Enchantment::new("enchantment", 1);
+        item.add_enchantment(enchantment.clone());
+
+        let enchanter = StandardEnchanter::new(AlwaysFailEnchantmentCombiner);
+        let result = enchanter.enchant(&mut item, enchantment.clone());
+
+        let mut expected_item = new_item();
+        expected_item.add_enchantment(enchantment.clone());
+
+        let expected = Err(EnchantError {
+            enchantment: enchantment.clone(),
+            kind: EnchantErrorKind::IncompatibleEnchantment(enchantment.kind),
+        });
+
+        assert_eq!(result, expected);
+        assert_eq!(item, expected_item);
+    }
+
+    #[test]
+    fn test_enchant_combinable() {
+        let mut item = new_item();
+        let enchantment = Enchantment::new("enchantment", 1);
+        item.add_enchantment(enchantment.clone());
+
+        let combiner = BasicEnchantmentCombiner;
+        let enchanter = StandardEnchanter::new(BasicEnchantmentCombiner);
+        let result = enchanter.enchant(&mut item, enchantment.clone());
+
+        let combined_level = combiner
+            .combine(&enchantment, enchantment.level, enchantment.level)
+            .unwrap();
+
+        let mut expected_item = new_item();
+        expected_item.add_enchantment(Enchantment::new(enchantment.kind.clone(), combined_level));
+
+        let expected = Ok(combined_level);
+        assert_eq!(result, expected);
+        assert_eq!(item, expected_item);
+    }
+
+    fn new_item() -> Item {
+        Item::new(ItemKindId::new("im_an_item"))
+    }
+}

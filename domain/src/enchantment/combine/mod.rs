@@ -1,9 +1,15 @@
+#[cfg(test)]
+mod always_fail;
+
 mod basic;
 mod bedrock;
 mod cap_max_level;
 mod java;
 mod reject_level_overflow;
 mod reject_weaker_sacrifice;
+
+#[cfg(test)]
+pub use always_fail::AlwaysFailEnchantmentCombiner;
 
 pub use basic::BasicEnchantmentCombiner;
 pub use bedrock::bedrock_enchantment_combiner;
