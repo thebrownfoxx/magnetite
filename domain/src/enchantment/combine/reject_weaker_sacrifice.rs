@@ -14,7 +14,7 @@ impl<Impl: CombineEnchantments> CombineEnchantments
 {
     fn combine(
         &self,
-        kind: &EnchantmentKindId,
+        kind: impl AsRef<EnchantmentKindId>,
         target_level: EnchantmentLevel,
         sacrifice_level: EnchantmentLevel,
     ) -> Option<EnchantmentLevel> {
@@ -22,7 +22,7 @@ impl<Impl: CombineEnchantments> CombineEnchantments
             return None;
         }
 
-        self.0.combine(kind, target_level, sacrifice_level)
+        self.0.combine(kind.as_ref(), target_level, sacrifice_level)
     }
 }
 

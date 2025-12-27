@@ -28,15 +28,17 @@ where
 {
     fn combine(
         &self,
-        kind: &EnchantmentKindId,
+        kind: impl AsRef<EnchantmentKindId>,
         target_level: EnchantmentLevel,
         sacrifice_level: EnchantmentLevel,
     ) -> Option<EnchantmentLevel> {
+        let kind = kind.as_ref();
+
         let level = self
             .implementation
             .combine(kind, target_level, sacrifice_level)?;
 
-        let max_level = (self.max_level)(&kind);
+        let max_level = (self.max_level)(kind);
 
         if level > max_level {
             return None;

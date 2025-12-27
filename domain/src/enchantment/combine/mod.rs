@@ -17,7 +17,7 @@ use crate::enchantment::{EnchantmentKindId, EnchantmentLevel};
 pub trait CombineEnchantments {
     fn combine(
         &self,
-        kind: &EnchantmentKindId,
+        kind: impl AsRef<EnchantmentKindId>,
         target_level: EnchantmentLevel,
         sacrifice_level: EnchantmentLevel,
     ) -> Option<EnchantmentLevel>;

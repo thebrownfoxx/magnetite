@@ -6,7 +6,7 @@ pub struct BasicEnchantmentCombiner;
 impl CombineEnchantments for BasicEnchantmentCombiner {
     fn combine(
         &self,
-        _: &EnchantmentKindId,
+        _: impl AsRef<EnchantmentKindId>,
         target_level: EnchantmentLevel,
         sacrifice_level: EnchantmentLevel,
     ) -> Option<EnchantmentLevel> {
