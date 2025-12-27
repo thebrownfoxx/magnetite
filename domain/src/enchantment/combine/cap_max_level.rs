@@ -31,8 +31,8 @@ where
     fn combine(
         &self,
         kind: impl AsRef<EnchantmentKindId>,
-        target_level: EnchantmentLevel,
-        sacrifice_level: EnchantmentLevel,
+        target_level: impl Into<EnchantmentLevel>,
+        sacrifice_level: impl Into<EnchantmentLevel>,
     ) -> Option<EnchantmentLevel> {
         let kind = kind.as_ref();
 

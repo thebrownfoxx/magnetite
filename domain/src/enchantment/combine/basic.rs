@@ -7,10 +7,10 @@ impl CombineEnchantments for BasicEnchantmentCombiner {
     fn combine(
         &self,
         _: impl AsRef<EnchantmentKindId>,
-        target_level: EnchantmentLevel,
-        sacrifice_level: EnchantmentLevel,
+        target_level: impl Into<EnchantmentLevel>,
+        sacrifice_level: impl Into<EnchantmentLevel>,
     ) -> Option<EnchantmentLevel> {
-        Some(target_level.combine(sacrifice_level))
+        Some(target_level.into().combine(sacrifice_level.into()))
     }
 }
 
