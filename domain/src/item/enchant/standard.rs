@@ -28,11 +28,9 @@ impl<Combine: CombineEnchantments> Enchant for StandardEnchanter<Combine> {
             return Ok(level);
         };
 
-        let target_level = matching_enchantment.level;
-        let sacrifice_level = enchantment.level;
         let combined_level =
             self.combiner
-                .combine(&enchantment.kind, target_level, sacrifice_level);
+                .combine(&enchantment, matching_enchantment.level, enchantment.level);
 
         let Some(combined_level) = combined_level else {
             item.add_enchantment(matching_enchantment);
