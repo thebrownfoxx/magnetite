@@ -4,28 +4,28 @@ use crate::enchantment::combine::CombineEnchantments;
 use crate::enchantment::{EnchantmentKindId, EnchantmentLevel};
 
 #[derive(Debug)]
-pub struct CapMaxLevelEnchantmentCombiner<Impl, Max>
+pub struct CapMaxLevelEnchantmentCombiner<Combine, Max>
 where
-    Impl: CombineEnchantments,
+    Combine: CombineEnchantments,
     Max: Fn(&EnchantmentKindId) -> EnchantmentLevel,
 {
-    implementation: Impl,
+    combiner: Combine,
     max_level: Max,
 }
 
-impl<Impl, Max> CapMaxLevelEnchantmentCombiner<Impl, Max>
+impl<Combine, Max> CapMaxLevelEnchantmentCombiner<Combine, Max>
 where
-    Impl: CombineEnchantments,
+    Combine: CombineEnchantments,
     Max: Fn(&EnchantmentKindId) -> EnchantmentLevel,
 {
-    pub fn new(implementation: Impl, max_level: Max) -> Self {
-        Self { implementation, max_level }
+    pub fn new(combiner: Combine, max_level: Max) -> Self {
+        Self { combiner: combiner, max_level }
     }
 }
 
-impl<Impl, Max> CombineEnchantments for CapMaxLevelEnchantmentCombiner<Impl, Max>
+impl<Combine, Max> CombineEnchantments for CapMaxLevelEnchantmentCombiner<Combine, Max>
 where
-    Impl: CombineEnchantments,
+    Combine: CombineEnchantments,
     Max: Fn(&EnchantmentKindId) -> EnchantmentLevel,
 {
     fn combine(
@@ -36,9 +36,7 @@ where
     ) -> Option<EnchantmentLevel> {
         let kind = kind.as_ref();
 
-        let level = self
-            .implementation
-            .combine(kind, target_level, sacrifice_level)?;
+        let level = self.combiner.combine(kind, target_level, sacrifice_level)?;
 
         let max_level = (self.max_level)(kind);
         Some(min(level, max_level))
@@ -67,7 +65,7 @@ mod tests {
         let sacrifice = target;
 
         let result = combine(combiner(), target, sacrifice);
-        let expected = combine(implementation(), target, sacrifice);
+        let expected = combine(combiner(), target, sacrifice);
         assert_eq!(result, expected);
     }
 
@@ -81,10 +79,10 @@ mod tests {
     }
 
     fn combiner() -> impl CombineEnchantments {
-        CapMaxLevelEnchantmentCombiner::new(implementation(), |_| max_enchantment_level())
+        CapMaxLevelEnchantmentCombiner::new(combiner(), |_| max_enchantment_level())
     }
 
-    fn implementation() -> impl CombineEnchantments {
+    fn combiner() -> impl CombineEnchantments {
         BasicEnchantmentCombiner
     }
 

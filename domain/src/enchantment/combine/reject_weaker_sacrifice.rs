@@ -1,16 +1,16 @@
 use crate::enchantment::{EnchantmentKindId, EnchantmentLevel, combine::CombineEnchantments};
 
 #[derive(Debug)]
-pub struct RejectWeakerSacrificeEnchantmentCombiner<Impl: CombineEnchantments>(Impl);
+pub struct RejectWeakerSacrificeEnchantmentCombiner<Combine: CombineEnchantments>(Combine);
 
-impl<Impl: CombineEnchantments> RejectWeakerSacrificeEnchantmentCombiner<Impl> {
-    pub fn new(implementation: Impl) -> Self {
-        Self(implementation)
+impl<Combine: CombineEnchantments> RejectWeakerSacrificeEnchantmentCombiner<Combine> {
+    pub fn new(combiner: Combine) -> Self {
+        Self(combiner)
     }
 }
 
-impl<Impl: CombineEnchantments> CombineEnchantments
-    for RejectWeakerSacrificeEnchantmentCombiner<Impl>
+impl<Combine: CombineEnchantments> CombineEnchantments
+    for RejectWeakerSacrificeEnchantmentCombiner<Combine>
 {
     fn combine(
         &self,
@@ -51,7 +51,7 @@ mod tests {
         let sacrifice = EnchantmentLevel::new(1);
 
         let result = combine(combiner(), target, sacrifice);
-        let expected = combine(implementation(), target, sacrifice);
+        let expected = combine(combiner(), target, sacrifice);
         assert_eq!(result, expected);
     }
 
@@ -65,10 +65,10 @@ mod tests {
     }
 
     fn combiner() -> impl CombineEnchantments {
-        RejectWeakerSacrificeEnchantmentCombiner::new(implementation())
+        RejectWeakerSacrificeEnchantmentCombiner::new(combiner())
     }
 
-    fn implementation() -> impl CombineEnchantments {
+    fn combiner() -> impl CombineEnchantments {
         BasicEnchantmentCombiner
     }
 }

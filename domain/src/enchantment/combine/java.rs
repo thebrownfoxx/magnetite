@@ -6,6 +6,6 @@ use crate::enchantment::{EnchantmentKindId, EnchantmentLevel};
 pub fn java_enchantment_combiner(
     max_level: impl Fn(&EnchantmentKindId) -> EnchantmentLevel,
 ) -> impl CombineEnchantments {
-    let implementation = BasicEnchantmentCombiner;
-    CapMaxLevelEnchantmentCombiner::new(implementation, max_level)
+    let combiner = BasicEnchantmentCombiner;
+    CapMaxLevelEnchantmentCombiner::new(combiner, max_level)
 }

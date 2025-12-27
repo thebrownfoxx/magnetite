@@ -47,3 +47,11 @@ where
         self.enchanter.enchant(item, enchantment)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_incompatible_enchantment() {}
+}
