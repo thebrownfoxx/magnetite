@@ -1,4 +1,5 @@
-use crate::enchantment::{EnchantmentKindId, EnchantmentLevel, combine::CombineEnchantments};
+use crate::enchantment::combine::CombineEnchantments;
+use crate::enchantment::{EnchantmentKindId, EnchantmentLevel};
 
 #[derive(Debug)]
 pub struct RejectWeakerSacrificeEnchantmentCombiner<Combine: CombineEnchantments>(Combine);
@@ -65,10 +66,10 @@ mod tests {
     }
 
     fn combiner() -> impl CombineEnchantments {
-        RejectWeakerSacrificeEnchantmentCombiner::new(combiner())
+        RejectWeakerSacrificeEnchantmentCombiner::new(implementation())
     }
 
-    fn combiner() -> impl CombineEnchantments {
+    fn implementation() -> impl CombineEnchantments {
         BasicEnchantmentCombiner
     }
 }

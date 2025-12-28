@@ -82,10 +82,10 @@ mod tests {
     }
 
     fn combiner() -> impl CombineEnchantments {
-        RejectLevelOverflowEnchantmentCombiner::new(combiner(), |_| max_enchantment_level())
+        RejectLevelOverflowEnchantmentCombiner::new(implementation(), |_| max_enchantment_level())
     }
 
-    fn combiner() -> impl CombineEnchantments {
+    fn implementation() -> impl CombineEnchantments {
         BasicEnchantmentCombiner
     }
 

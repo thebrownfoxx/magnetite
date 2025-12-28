@@ -79,10 +79,10 @@ mod tests {
     }
 
     fn combiner() -> impl CombineEnchantments {
-        CapMaxLevelEnchantmentCombiner::new(combiner(), |_| max_enchantment_level())
+        CapMaxLevelEnchantmentCombiner::new(implementation(), |_| max_enchantment_level())
     }
 
-    fn combiner() -> impl CombineEnchantments {
+    fn implementation() -> impl CombineEnchantments {
         BasicEnchantmentCombiner
     }
 
