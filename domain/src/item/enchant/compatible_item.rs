@@ -42,3 +42,61 @@ where
         self.enchanter.enchant(item, enchantment)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use crate::enchantment::combine::BasicEnchantmentCombiner;
+    use crate::item::ItemKindId;
+    use crate::item::enchant::BasicEnchanter;
+
+    use super::*;
+
+    #[test]
+    fn test_incompatible_item() {
+        let mut item = new_item();
+        let expected_item = item.clone();
+
+        let enchantment = Enchantment::new("enchantment", 1);
+
+        let enchanter = enchanter(false);
+        let result = enchanter.enchant(&mut item, enchantment.clone());
+
+        let expected = Err(EnchantError {
+            enchantment: enchantment.clone(),
+            kind: EnchantErrorKind::IncompatibleItemKind,
+        });
+
+        assert_eq!(result, expected);
+        assert_eq!(item, expected_item);
+    }
+
+    #[test]
+    fn test_compatible_enchantment() {
+        let mut item = new_item();
+        let mut expected_item = item.clone();
+
+        let enchantment = Enchantment::new("enchantment", 1);
+
+        let enchanter = enchanter(true);
+        let result = enchanter.enchant(&mut item, enchantment.clone());
+
+        let implementation = implementation();
+        let expected = implementation.enchant(&mut expected_item, enchantment);
+
+        assert_eq!(result, expected);
+        assert_eq!(item, expected_item);
+    }
+
+    fn enchanter(compatible: bool) -> impl Enchant {
+        let enchanter = implementation();
+        CompatibleItemEnchanter::new(enchanter, move |_, _| compatible)
+    }
+
+    fn implementation() -> impl Enchant {
+        BasicEnchanter::new(BasicEnchantmentCombiner)
+    }
+
+    fn new_item() -> Item {
+        Item::new(ItemKindId::new("im_an_item"))
+    }
+}
