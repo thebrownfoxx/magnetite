@@ -51,7 +51,6 @@ where
 #[cfg(test)]
 mod tests {
     use crate::enchantment::combine::BasicEnchantmentCombiner;
-    use crate::item::ItemKindId;
     use crate::item::enchant::BasicEnchanter;
 
     use super::*;
@@ -108,6 +107,6 @@ mod tests {
     }
 
     fn new_item() -> Item {
-        Item::new(ItemKindId::new("im_an_item"))
+        Item::new("im_an_item")
     }
 }

@@ -47,7 +47,6 @@ impl<Combine: CombineEnchantments> Enchant for BasicEnchanter<Combine> {
 #[cfg(test)]
 mod tests {
     use crate::enchantment::combine::{AlwaysFailEnchantmentCombiner, BasicEnchantmentCombiner};
-    use crate::item::ItemKindId;
 
     use super::*;
 
@@ -109,6 +108,6 @@ mod tests {
     }
 
     fn new_item() -> Item {
-        Item::new(ItemKindId::new("im_an_item"))
+        Item::new("im_an_item")
     }
 }
