@@ -72,11 +72,10 @@ mod tests {
         let enchantment = Enchantment::new("enchantment", 1);
         item.add_enchantment(enchantment.clone());
 
+        let expected_item = item.clone();
+
         let enchanter = BasicEnchanter::new(AlwaysFailEnchantmentCombiner);
         let result = enchanter.enchant(&mut item, enchantment.clone());
-
-        let mut expected_item = new_item();
-        expected_item.add_enchantment(enchantment.clone());
 
         let expected = Err(EnchantError {
             enchantment: enchantment.clone(),
