@@ -50,6 +50,14 @@ where
             cost += (self.base_enchant_cost)(enchant_result) * cost_multiplier;
         }
 
+        let has_compatible_enchantments = enchant_results
+            .iter()
+            .any(|enchant_result| enchant_result.is_ok());
+
+        if !has_compatible_enchantments {
+            return Err(AnvilError::NoCompatibleEnchantments);
+        }
+
         target.anvil_passes = max(target.anvil_passes, sacrifice.anvil_passes) + 1;
 
         Ok(AnvilCombination { cost, enchant_results })
