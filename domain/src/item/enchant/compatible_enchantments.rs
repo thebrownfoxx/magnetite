@@ -35,7 +35,7 @@ where
         enchantment: Enchantment,
     ) -> Result<EnchantmentLevel, EnchantError> {
         let incompatible_enchantment = item.enchantment_kinds().find(|existing_enchantment| {
-            (self.are_compatible)(&existing_enchantment, &enchantment.kind)
+            !(self.are_compatible)(&existing_enchantment, &enchantment.kind)
         });
 
         if let Some(incompatible_enchantment) = incompatible_enchantment {
