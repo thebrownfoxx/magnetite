@@ -1,12 +1,10 @@
 mod basic;
 mod compatible_enchantments;
 mod compatible_item;
-mod reporting;
 
 pub use basic::BasicEnchanter;
 pub use compatible_enchantments::CompatibleEnchantmentsEnchanter;
 pub use compatible_item::CompatibleItemEnchanter;
-pub use reporting::{EnchantReport, EnchantSuccess, ReportingEnchanter};
 
 use crate::enchantment::{Enchantment, EnchantmentKindId, EnchantmentLevel};
 use crate::item::Item;

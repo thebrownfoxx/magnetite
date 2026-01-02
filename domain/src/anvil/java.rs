@@ -1,6 +1,7 @@
-use crate::item::enchant::{EnchantError, EnchantErrorKind, EnchantReport, EnchantSuccess};
+use crate::item::combine::{EnchantResult, EnchantSuccess};
+use crate::item::enchant::{EnchantError, EnchantErrorKind};
 
-pub fn java_base_enchant_cost(report: &EnchantReport) -> u8 {
+pub fn java_base_enchant_cost(report: &EnchantResult) -> u8 {
     match report {
         Ok(EnchantSuccess { new_level, .. }) => new_level.value(),
         Err(EnchantError { kind, .. }) => java_base_enchant_error_cost(kind),

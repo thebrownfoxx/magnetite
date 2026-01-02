@@ -6,9 +6,9 @@ mod standard;
 pub use bedrock::bedrock_base_enchant_cost;
 pub use item::AnvilItem;
 pub use java::java_base_enchant_cost;
-pub use standard::{GenerateCombiner, GenerateEnchanter, StandardAnvil};
+pub use standard::StandardAnvil;
 
-use crate::item::{combine::CombineItemsError, enchant::EnchantError};
+use crate::item::combine::EnchantResult;
 
 pub trait Anvil {
     fn combine(
@@ -20,7 +20,7 @@ pub trait Anvil {
 
 pub struct AnvilCombination {
     pub cost: u8,
-    pub enchant_errors: Vec<EnchantError>,
+    pub enchant_results: Vec<EnchantResult>,
 }
 
 #[derive(Eq, PartialEq, Ord, PartialOrd, Copy, Clone, Hash, Debug)]
@@ -28,13 +28,4 @@ pub enum AnvilError {
     IncompatibleItemKinds,
     NoCompatibleEnchantments,
     TooExpensive { cost: u8, max_cost: u8 },
-}
-
-impl From<CombineItemsError> for AnvilError {
-    fn from(value: CombineItemsError) -> Self {
-        match value {
-            CombineItemsError::IncompatibleItemKinds => AnvilError::IncompatibleItemKinds,
-            CombineItemsError::NoCompatibleEnchantments => AnvilError::NoCompatibleEnchantments,
-        }
-    }
 }
