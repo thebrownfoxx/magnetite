@@ -1,6 +1,7 @@
 pub mod combine;
 pub mod enchant;
 
+mod builder;
 mod kind;
 
 pub use kind::{ItemKind, ItemKindId};

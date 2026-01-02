@@ -51,15 +51,24 @@ where
 #[cfg(test)]
 mod tests {
     use crate::enchantment::combine::BasicEnchantmentCombiner;
+    use crate::item;
     use crate::item::enchant::BasicEnchanter;
 
     use super::*;
 
+    macro_rules! new_item {
+        () => {
+            item!("im_an_enchantment")
+        };
+        ($( $enchantment:expr ),+ ) => {
+            item!("im_an_enchantment", $($enchantment)*)
+        };
+    }
+
     #[test]
     fn test_incompatible_enchantment() {
-        let mut item = new_item();
         let existing_enchantment = Enchantment::new("incompatible_enchantment", 1);
-        item.add_enchantment(existing_enchantment.clone());
+        let mut item = new_item!(existing_enchantment.clone());
 
         let expected_item = item.clone();
 
@@ -79,9 +88,8 @@ mod tests {
 
     #[test]
     fn test_compatible_enchantment() {
-        let mut item = new_item();
         let existing_enchantment = Enchantment::new("compatible_enchantment", 1);
-        item.add_enchantment(existing_enchantment.clone());
+        let mut item = new_item!(existing_enchantment.clone());
 
         let mut expected_item = item.clone();
 
@@ -104,9 +112,5 @@ mod tests {
 
     fn implementation() -> impl Enchant {
         BasicEnchanter::new(BasicEnchantmentCombiner)
-    }
-
-    fn new_item() -> Item {
-        Item::new("im_an_item")
     }
 }
