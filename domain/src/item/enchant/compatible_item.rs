@@ -55,8 +55,8 @@ mod tests {
         () => {
             item!("im_an_enchantment")
         };
-        ($( $enchantment:expr ),* ) => {
-            item!("im_an_enchantment", $($enchantment)*)
+        ($($enchantment:expr),+ $(,)?) => {
+            item!("im_an_enchantment", $($enchantment)+)
         };
     }
 
