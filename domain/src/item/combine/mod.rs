@@ -12,7 +12,7 @@ pub trait CombineItems {
 
 pub type EnchantResult = Result<EnchantSuccess, EnchantError>;
 
-#[derive(Eq, PartialEq, Clone, Hash, Debug)]
+#[derive(Eq, PartialEq, Ord, PartialOrd, Clone, Hash, Debug)]
 pub struct EnchantSuccess {
     pub kind: EnchantmentKindId,
     pub old_level: Option<EnchantmentLevel>,

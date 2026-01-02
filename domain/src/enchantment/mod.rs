@@ -10,7 +10,7 @@ pub use kind::{EnchantmentKind, EnchantmentKindId};
 pub use level::EnchantmentLevel;
 pub use reference::EnchantmentReference;
 
-#[derive(Eq, PartialEq, Clone, Hash, Debug)]
+#[derive(Eq, PartialEq, Ord, PartialOrd, Clone, Hash, Debug)]
 pub struct Enchantment {
     pub kind: EnchantmentKindId,
     pub level: EnchantmentLevel,

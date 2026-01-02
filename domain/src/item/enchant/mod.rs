@@ -17,13 +17,13 @@ pub trait Enchant {
     ) -> Result<EnchantmentLevel, EnchantError>;
 }
 
-#[derive(Eq, PartialEq, Clone, Hash, Debug)]
+#[derive(Eq, PartialEq, Ord, PartialOrd, Clone, Hash, Debug)]
 pub struct EnchantError {
     pub enchantment: Enchantment,
     pub kind: EnchantErrorKind,
 }
 
-#[derive(Eq, PartialEq, Clone, Hash, Debug)]
+#[derive(Eq, PartialEq, Ord, PartialOrd, Clone, Hash, Debug)]
 pub enum EnchantErrorKind {
     IncompatibleItemKind,
     IncompatibleEnchantment(EnchantmentKindId),
