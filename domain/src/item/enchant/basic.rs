@@ -67,12 +67,11 @@ mod tests {
 
         let enchanter = BasicEnchanter::new(BasicEnchantmentCombiner);
         let result = enchanter.enchant(&mut item, enchantment.clone());
+        let expected = Ok(enchantment.level);
 
-        let mut expected_item = new_item!();
-        expected_item.add_enchantment(enchantment.clone());
-
-        assert_eq!(result, Ok(enchantment.level));
+        let expected_item = new_item!(enchantment.clone());
         assert_eq!(item, expected_item);
+        assert_eq!(result, expected);
     }
 
     #[test]
@@ -107,8 +106,7 @@ mod tests {
             .combine(&enchantment, enchantment.level, enchantment.level)
             .unwrap();
 
-        let mut expected_item = new_item!();
-        expected_item.add_enchantment(Enchantment::new(enchantment.kind.clone(), combined_level));
+        let expected_item = new_item!(Enchantment::new(enchantment.kind.clone(), combined_level));
 
         let expected = Ok(combined_level);
         assert_eq!(result, expected);
