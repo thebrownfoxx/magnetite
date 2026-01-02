@@ -1,22 +1,22 @@
-use crate::enchantment::EnchantmentLevel;
-use crate::enchantment::{Enchantment, combine::CombineEnchantments};
-use crate::item::enchant::EnchantErrorKind;
-use crate::item::{Item, enchant::Enchant};
+use crate::enchantment::combine::CombineEnchantments;
+use crate::enchantment::{Enchantment, EnchantmentLevel};
+use crate::item::Item;
+use crate::item::enchant::{Enchant, EnchantErrorKind};
 
 use super::EnchantError;
 
 #[derive(Debug)]
-pub struct StandardEnchanter<Combine: CombineEnchantments> {
+pub struct BasicEnchanter<Combine: CombineEnchantments> {
     combiner: Combine,
 }
 
-impl<Combine: CombineEnchantments> StandardEnchanter<Combine> {
+impl<Combine: CombineEnchantments> BasicEnchanter<Combine> {
     pub fn new(combiner: Combine) -> Self {
         Self { combiner }
     }
 }
 
-impl<Combine: CombineEnchantments> Enchant for StandardEnchanter<Combine> {
+impl<Combine: CombineEnchantments> Enchant for BasicEnchanter<Combine> {
     fn enchant(
         &self,
         item: &mut Item,
@@ -46,10 +46,8 @@ impl<Combine: CombineEnchantments> Enchant for StandardEnchanter<Combine> {
 
 #[cfg(test)]
 mod tests {
-    use crate::{
-        enchantment::combine::{AlwaysFailEnchantmentCombiner, BasicEnchantmentCombiner},
-        item::ItemKindId,
-    };
+    use crate::enchantment::combine::{AlwaysFailEnchantmentCombiner, BasicEnchantmentCombiner};
+    use crate::item::ItemKindId;
 
     use super::*;
 
@@ -58,7 +56,7 @@ mod tests {
         let mut item = new_item();
         let enchantment = Enchantment::new("enchantment", 1);
 
-        let enchanter = StandardEnchanter::new(BasicEnchantmentCombiner);
+        let enchanter = BasicEnchanter::new(BasicEnchantmentCombiner);
         let result = enchanter.enchant(&mut item, enchantment.clone());
 
         let mut expected_item = new_item();
@@ -74,7 +72,7 @@ mod tests {
         let enchantment = Enchantment::new("enchantment", 1);
         item.add_enchantment(enchantment.clone());
 
-        let enchanter = StandardEnchanter::new(AlwaysFailEnchantmentCombiner);
+        let enchanter = BasicEnchanter::new(AlwaysFailEnchantmentCombiner);
         let result = enchanter.enchant(&mut item, enchantment.clone());
 
         let mut expected_item = new_item();
@@ -96,7 +94,7 @@ mod tests {
         item.add_enchantment(enchantment.clone());
 
         let combiner = BasicEnchantmentCombiner;
-        let enchanter = StandardEnchanter::new(BasicEnchantmentCombiner);
+        let enchanter = BasicEnchanter::new(BasicEnchantmentCombiner);
         let result = enchanter.enchant(&mut item, enchantment.clone());
 
         let combined_level = combiner
