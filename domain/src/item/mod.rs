@@ -7,6 +7,7 @@ mod kind;
 pub use kind::{ItemKind, ItemKindId};
 
 use crate::enchantment::{Enchantment, EnchantmentKindId, EnchantmentLevel, EnchantmentReference};
+
 use std::collections::HashMap;
 
 #[derive(Eq, PartialEq, Clone, Debug)]
